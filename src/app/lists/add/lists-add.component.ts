@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { listsAddAnimations } from './lists-add.animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { List } from '../_model/list';
-import { ListsService } from '../lists.service';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'lists-add',
@@ -16,7 +15,7 @@ export class ListsAddComponent implements OnInit {
   @Output() onClose = new EventEmitter<string>();
   form: FormGroup;
 
-  constructor(private listsService: ListsService) {
+  constructor(private appService: AppService) {
   }
 
   ngOnInit(): void {
@@ -27,15 +26,7 @@ export class ListsAddComponent implements OnInit {
 
   submit(): void {
     if (this.form.valid) {
-      const date = new Date();
-      const list: List = {
-        id: this.generateRandomId(),
-        name: this.form.value.name,
-        createdDate: date,
-        lastUpdatedDate: date,
-        items: []
-      };
-      this.listsService.addList(list).then(() => this.addSuccessful(), () => this.addFailed);
+      this.appService.addListNew(this.form.value.name).then(() => this.addSuccessful(), () => this.addFailed());
       this.form.reset();
     }
   }
@@ -45,15 +36,10 @@ export class ListsAddComponent implements OnInit {
   }
 
   private addSuccessful(): void {
-    console.log('was successsufl');
     this.close();
   }
 
   private addFailed(): void {
     // todo: add failed
-  }
-
-  private generateRandomId(): string {
-    return Math.random().toString(36).substr(2, 9);
   }
 }

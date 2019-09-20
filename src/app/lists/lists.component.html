@@ -9,12 +9,14 @@
       <a [routerLink]="'items/' + list.id" class="no-decoration">
         <main>
           <p class="list__name">{{list.name}}</p>
-          <p class="list__last-updated">last updated: {{list.createdDate | date:'short'}}</p>
+          <p class="list__last-updated">last updated: {{list.lastUpdated | date:'short'}}</p>
         </main>
       </a>
-      <a (click)="removeList(list)">
-        <aside class="list__aside"><span>x</span></aside>
-      </a>
+      <aside class="list__actions">
+        <a (click)="copyList(list)" class="list__actions__action"><fa-icon [icon]="faCopy "></fa-icon></a>
+        <a (click)="removeList(list.id)" class="list__actions__action"><fa-icon [icon]="faTrash"></fa-icon></a>
+      </aside>
+
     </li>
   </ng-template>
 </ul>

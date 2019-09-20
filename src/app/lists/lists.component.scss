@@ -1,0 +1,33 @@
+.list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list {
+  padding: 12px;
+  position: relative;
+  border-bottom: 1px solid #66b2b2;
+}
+
+.list__actions {
+
+}
+
+.list__actions__action {
+  color: #008080;
+}
+
+.list__actions__action + .list__actions__action {
+  margin-left: 24px;
+}
+
+.list__name {
+  color: 	#008080;
+  font-size: 18px;
+}
+
+.list__last-updated {
+  color: #909090;
+  font-size: 14px;
+}

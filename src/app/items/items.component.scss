@@ -15,5 +15,9 @@
 
 .item {
   border-bottom: 1px solid #008080;
-  padding: 12px;
+
+  a {
+    display: block;
+    padding: 12px;
+  }
 }

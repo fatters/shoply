@@ -1,19 +1,20 @@
 import { List } from '../lists/_model/list';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { ListsService } from '../lists/lists.service';
 import { Injectable } from '@angular/core';
-import { filter, map, take } from 'rxjs/operators';
+import { AppService } from '../app.service';
+import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { ListQuery } from '../lists/state/list.query';
 
 @Injectable()
 export class ItemsResolver implements Resolve<List> {
 
-  constructor(private listsService: ListsService) {
+  constructor(private appService: AppService,
+              private listQuery: ListQuery) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<List> | Promise<List> | List {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const id = route.params.id;
-    console.log(id);
-    return this.listsService.lists$.pipe(take(1), map((items) => items.filter((item) => item.id === id)[0]));
+    return this.listQuery.selectAll({filterBy: (entity) => entity.id === id}).pipe(first());
   }
 }

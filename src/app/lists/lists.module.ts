@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { ListsComponent } from './lists.component';
 import { Route, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ListsService } from './lists.service';
 import { ListsAddComponent } from './add/lists-add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Route[] = [
   {path: '', component: ListsComponent}
@@ -18,11 +18,9 @@ const routes: Route[] = [
   imports: [
     CommonModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
-  ],
-  providers: [
-    ListsService
   ]
 })
 export class ListsModule {

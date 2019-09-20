@@ -4,12 +4,7 @@ body {
   font-family: 'Cabin', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.list {
-  padding: 12px;
-  position: relative;
-  border-bottom: 1px solid #008080;
+  font-size: 16px;
 }
 
 .header {
@@ -34,35 +29,6 @@ body {
       color: white;
     }
   }
-}
-
-.list__aside {
-  position: absolute;
-  width: 66px;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background: #66b2b2;
-  color: white;
-  cursor: pointer;
-
-  span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-  }
-}
-
-.list__name {
-  color: 	#008080;
-  font-size: 18px;
-}
-
-.list__last-updated {
-  color: #909090;
-  font-size: 14px;
 }
 
 .no-decoration {
@@ -93,6 +59,7 @@ button {
   font-family: 'Cabin', Arial, sans-serif;
   height: 32px;
   line-height: 32px;
+  font-size: 16px;
 
   &:disabled {
     background: #c0c0c0;
@@ -117,7 +84,7 @@ button {
 .alert {
   background:	#b2d8d8;
   padding: 12px;
-  color: white;
+  color: #f6f6f6;
   border-radius: 4px;
   margin-bottom: 12px;
 }
