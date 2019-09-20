@@ -7,8 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderModule } from './common/header/header.module';
 
 const routes: Route[] = [
-  {path: '', loadChildren: () => import(`./lists/lists.module`).then((m) => m.ListsModule)},
-  {path: 'items/:id', loadChildren: () => import(`./items/items.module`).then((m) => m.ItemsModule)}
+  {path: '', loadChildren: './lists/lists.module#ListsModule'},
+  {path: 'items/:id', loadChildren: './items/items.module#ItemsModule'}
 ];
 
 @NgModule({
