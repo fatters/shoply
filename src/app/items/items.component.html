@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="page-top item-add">
+  <p class="alert">Click an item to remove it</p>
+  <form novalidate (ngSubmit)="submit()" [formGroup]="form">
+    <input type="text" id="name" formControlName="name" placeholder="item name e.g. milk" />
+    <button type="submit" [disabled]="form.invalid">Add</button>
+  </form>
+</div>
 
-</body>
-</html>
+<ul *ngIf="list && list.items && list.items.length > 0; else noItems">
+  <li *ngFor="let item of list.items" class="item"><a (click)="removeItem(item)">{{item.name}}</a></li>
+</ul>
+
+<ng-template #noItems>
+  <div class="page-content">
+    <p>This list currently has no items!</p>
+  </div>
+</ng-template>
+
+

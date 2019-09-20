@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="lists-add" [@flyInOut]="animationState">
+  <div class="page-content">
+    <p class="alert">
+      The list you are adding will be added to your devices local storage. If you wipe this app's data or change device,
+      this list will not appear.
+    </p>
+    <form novalidate (ngSubmit)="submit()" [formGroup]="form">
+      <input type="text" id="name" formControlName="name" placeholder="list name e.g. tesco friday" />
+      <button type="submit" [disabled]="form.invalid">Create New List</button>
+      <button (click)="close()">Cancel</button>
+    </form>
+  </div>
+</div>

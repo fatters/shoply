@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="page-top">
+  <button (click)="addList()" class="full-width">Create New List</button>
+</div>
+<lists-add [animationState]="animationState" (onClose)="animationState = $event"></lists-add>
+
+<ul *ngIf="lists$ | async as lists">
+  <ng-template [ngIf]="lists.length > 0" [ngIfElse]="noLists">
+    <li *ngFor="let list of lists" class="list">
+      <a [routerLink]="'items/' + list.id" class="no-decoration">
+        <main>
+          <p class="list__name">{{list.name}}</p>
+          <p class="list__last-updated">last updated: {{list.createdDate | date:'short'}}</p>
+        </main>
+      </a>
+      <a (click)="removeList(list)">
+        <aside class="list__aside"><span>x</span></aside>
+      </a>
+    </li>
+  </ng-template>
+</ul>
+
+<ng-template #noLists>
+  <div class="page-content">
+    <p>You currently have no lists!</p>
+  </div>
+</ng-template>

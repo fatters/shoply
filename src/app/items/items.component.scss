@@ -1,0 +1,19 @@
+.item-add {
+  overflow: hidden;
+
+  button {
+    width: 100px;
+    float: left;
+  }
+
+  input {
+    width: calc(100% - 112px);
+    margin-right: 12px;
+    float: left;
+  }
+}
+
+.item {
+  border-bottom: 1px solid #008080;
+  padding: 12px;
+}
