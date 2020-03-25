@@ -46,24 +46,29 @@ input {
   display: block;
   width: 100%;
   border: 1px solid #66b2b2;
-  height: 32px;
+  height: 42px;
   padding: 0 6px;
 }
 
 button {
-  border: 0;
-  cursor: pointer;
-  border-radius: 4px;
-  background: #66b2b2;
-  color: white;
-  font-family: 'Cabin', Arial, sans-serif;
-  height: 32px;
-  line-height: 32px;
-  font-size: 16px;
+  border: 0!important;
+  cursor: pointer!important;
+  border-radius: 4px!important;
+  background: #66b2b2!important;
+  color: white!important;
+  font-family: 'Cabin', Arial, sans-serif!important;
+  height: 42px!important;
+  line-height: 42px!important;
+  font-size: 16px!important;
+
+
+  &:focus {
+    outline: 2px solid #008080;
+  }
 
   &:disabled {
-    background: #c0c0c0;
-    color: #333;
+    background: #c0c0c0!important;
+    color: #333!important;
   }
 }
 
@@ -87,4 +92,8 @@ button {
   color: #f6f6f6;
   border-radius: 4px;
   margin-bottom: 12px;
+}
+
+.swal2-styled {
+  padding: 2px 8px!important;
 }

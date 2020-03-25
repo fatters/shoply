@@ -1,11 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { List } from './_model/list';
 import { AppService } from '../app.service';
 import { faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ListStore } from './state/list.store';
-import { ListQuery } from './state/list.query';
-import { Listy } from './state/list.model';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'lists',
@@ -13,33 +11,37 @@ import { Listy } from './state/list.model';
   styleUrls: ['./lists.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListsComponent implements OnInit {
-  lists$: Observable<Listy[]>;
+export class ListsComponent implements OnInit, OnDestroy {
+  lists: List[];
   animationState = 'inactive';
   faTrash = faTrash;
   faCopy = faCopy;
+  private unsubscribe$ = new Subject();
 
-  constructor(private appService: AppService,
-              private listStore: ListStore,
-              private listQuery: ListQuery) {
+  constructor(private appService: AppService) {
   }
 
   ngOnInit(): void {
-    this.lists$ = this.listQuery.selectAll();
+    this.appService.stateChanged.pipe(takeUntil(this.unsubscribe$)).subscribe((state) => {
+      this.lists = state.shoppingLists;
+    });
   }
 
   addList(): void {
     this.animationState = 'active';
   }
 
-  copyList(list: Listy): void {
-    alert('coming soon');
-    // const copiedList = {...list};
-    // copiedList.id = 'created';
-    // this.appService.addList(copiedList);
+  copyList(list: List): void {
+    const copiedList = new List(list.name, new Date(), list.items);
+    this.appService.addList(copiedList);
   }
 
-  removeList(id: string): void {
-    this.appService.removeListNew(id);
+  removeList(list: List): void {
+    this.appService.removeList(list.id);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

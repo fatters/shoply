@@ -1,25 +1,24 @@
 .list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.list {
-  padding: 12px;
   position: relative;
   border-bottom: 1px solid #66b2b2;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  a {
+    padding: 12px;
+    flex-grow: 1;
+  }
 }
 
-.list__actions {
-
-}
-
-.list__actions__action {
-  color: #008080;
-}
-
-.list__actions__action + .list__actions__action {
-  margin-left: 24px;
+.action-button {
+  background: none!important;
+  border: 0!important;
+  color: #008080!important;
+  padding: 0 12px!important;
 }
 
 .list__name {

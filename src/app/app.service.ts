@@ -1,22 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Item } from './model/item';
-import { ListStore } from './lists/state/list.store';
-import { createList, Listy } from './lists/state/list.model';
-import { ListQuery } from './lists/state/list.query';
+import { Item } from './items/_model/item';
+import { ObservableStore } from '@codewithdan/observable-store';
+import { StoreState } from './store/store.state';
+import { List } from './lists/_model/list';
+
+export enum ListStoreActions {
+  AddList = 'add_list',
+  RemoveList = 'remove_list',
+  AddItem = 'add_item',
+  ChangeItem = 'change_item',
+  RemoteItem = 'remove_item'
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
+export class AppService extends ObservableStore<StoreState> {
 
-  constructor(private listStore: ListStore,
-              private listQuery: ListQuery) {
+  constructor() {
+    super({trackStateHistory: true});
+    const initialState = {
+      shoppingLists: JSON.parse(localStorage.getItem('lists')) || []
+    };
+    this.setState(initialState, 'init_state');
   }
 
-  addListNew(name: string): Promise<boolean> {
+  getListById(id: string): List {
+    const state = this.getState();
+    return state.shoppingLists.find((list: List) => list.id === id);
+  }
+
+  addList(list: List): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        this.listStore.add(createList({name: name}));
+        const state = this.getState();
+        state.shoppingLists.push(list);
+        this.setState({shoppingLists: state.shoppingLists}, ListStoreActions.AddList);
+        localStorage.setItem('lists', JSON.stringify(state.shoppingLists));
+        console.log(this.stateHistory);
         resolve(true);
       } catch {
         reject(false);
@@ -24,17 +45,39 @@ export class AppService {
     });
   }
 
-  removeListNew(id: string): void {
-    this.listStore.remove(id);
+  removeList(id: string): void {
+    const state = this.getState();
+    state.shoppingLists = state.shoppingLists.filter((list) => list.id !== id);
+
+    this.setState({shoppingLists: state.shoppingLists}, ListStoreActions.RemoveList);
+    localStorage.setItem('lists', JSON.stringify(state.shoppingLists));
   }
 
-  addItemToList(item: Item[], list: Listy): void {
-    this.listStore.update(list.id, () => ({items: [...list.items, ...item]}));
+  addItemToList(item: Item, listToAddTo: List): void {
+    const state = this.getState();
+    const currentList = state.shoppingLists.find((list: List) => list.id === listToAddTo.id);
+    currentList.items.push(item);
+
+    this.setState({shoppingLists: state.shoppingLists}, ListStoreActions.AddItem);
+    localStorage.setItem('lists', JSON.stringify(state.shoppingLists));
   }
 
-  removeItemFromList(item: Item, list: Listy): void {
-    const index = list.items.indexOf(item);
-    console.log(index);
-    this.listStore.update(list.id, () => ({items: [...list.items.slice(0, index), ...list.items.slice(index + 1, list.items.length)]}));
+  changeItemState(itemToChange: Item, listToChange: List, isComplete: boolean): void {
+    const state = this.getState();
+    const currentList = state.shoppingLists.find((list: List) => list.id === listToChange.id);
+    const currentItem = currentList.items.find((item: Item) => item.id === itemToChange.id);
+    currentItem.isComplete = isComplete;
+
+    this.setState({shoppingLists: state.shoppingLists}, ListStoreActions.ChangeItem);
+    localStorage.setItem('lists', JSON.stringify(state.shoppingLists));
+  }
+
+  deleteItem(itemToDelete: Item, listToChange: List): void {
+    const state = this.getState();
+    const currentList = state.shoppingLists.find((list: List) => list.id === listToChange.id);
+    currentList.items = currentList.items.filter((item: Item) => item.id !== itemToDelete.id);
+
+    this.setState({shoppingLists: state.shoppingLists}, ListStoreActions.RemoteItem);
+    localStorage.setItem('lists', JSON.stringify(state.shoppingLists));
   }
 }

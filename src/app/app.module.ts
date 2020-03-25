@@ -5,6 +5,8 @@ import { environment } from '../environments/environment';
 import { Route, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderModule } from './common/header/header.module';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { PwaService } from './common/pwa/pwa.service';
 
 const routes: Route[] = [
   {path: '', loadChildren: './lists/lists.module#ListsModule'},
@@ -19,9 +21,12 @@ const routes: Route[] = [
     BrowserAnimationsModule,
     HeaderModule,
     RouterModule.forRoot(routes),
+    SweetAlert2Module.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [
+    PwaService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

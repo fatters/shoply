@@ -6,11 +6,29 @@
   </form>
 </div>
 
-<ul *ngIf="list && list.items && list.items.length > 0; else noItems">
-  <li *ngFor="let item of list.items" class="item"><a (click)="removeItem(item)">{{item.name}}</a></li>
+<ul *ngIf="list && items && items.length > 0">
+  <li *ngFor="let item of items" class="item"><a *ngIf="!item.isComplete" (click)="removeItem(item)">{{item.name}}</a></li>
+</ul>
+<ul *ngIf="list && completeItems && completeItems.length > 0">
+
+  <li *ngFor="let item of completeItems" class="item">
+    <swal #deleteSwal
+          title="Delete {{item.name}}?"
+          text="This cannot be undone!"
+          type="question"
+          [position]="'bottom'"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="deleteItem(item)"></swal>
+
+    <div class="item__content">
+      <a *ngIf="item.isComplete" (click)="removeItem(item)"><s>{{item.name}}</s></a>
+      <button [swal]="deleteSwal" class="list__actions__action"><fa-icon [icon]="faTrash"></fa-icon></button>
+    </div>
+  </li>
 </ul>
 
-<ng-template #noItems>
+<ng-template [ngIf]="items && items.length === 0 && completeItems && completeItems.length === 0">
   <div class="page-content">
     <p>This list currently has no items!</p>
   </div>

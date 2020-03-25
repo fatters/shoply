@@ -3,21 +3,40 @@
 </div>
 <lists-add [animationState]="animationState" (onClose)="animationState = $event"></lists-add>
 
-<ul *ngIf="lists$ | async as lists">
+<ul *ngIf="lists">
   <ng-template [ngIf]="lists.length > 0" [ngIfElse]="noLists">
+
+
     <li *ngFor="let list of lists" class="list">
-      <a [routerLink]="'items/' + list.id" class="no-decoration">
-        <main>
-          <p class="list__name">{{list.name}}</p>
-          <p class="list__last-updated">last updated: {{list.lastUpdated | date:'short'}}</p>
-        </main>
-      </a>
-      <aside class="list__actions">
-        <a (click)="copyList(list)" class="list__actions__action"><fa-icon [icon]="faCopy "></fa-icon></a>
-        <a (click)="removeList(list.id)" class="list__actions__action"><fa-icon [icon]="faTrash"></fa-icon></a>
-      </aside>
+
+      <swal #deleteSwal
+            title="Delete {{list.name}}?"
+            text="This cannot be undone!"
+            type="question"
+            [position]="'bottom'"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="removeList(list)"></swal>
+
+      <div class="list__content">
+
+        <a [routerLink]="'items/' + list.id" class="no-decoration">
+          <main>
+            <p class="list__name">{{list.name}}</p>
+            <p class="list__last-updated">last updated: {{list.lastUpdatedDate | date:'dd/MM/yyyy HH:mm'}}</p>
+          </main>
+        </a>
+
+        <aside class="list__actions">
+          <button (click)="copyList(list)" class="action-button"><fa-icon [icon]="faCopy "></fa-icon></button>
+          <button [swal]="deleteSwal" class="action-button"><fa-icon [icon]="faTrash"></fa-icon></button>
+        </aside>
+
+      </div>
 
     </li>
+
+
   </ng-template>
 </ul>
 

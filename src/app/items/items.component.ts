@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Item } from '../model/item';
+import { Item } from './_model/item';
 import { AppService } from '../app.service';
-import { Listy } from '../lists/state/list.model';
-import { ListQuery } from '../lists/state/list.query';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { List } from '../lists/_model/list';
+import { takeUntil } from 'rxjs/operators';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'items',
@@ -13,49 +14,46 @@ import { Observable } from 'rxjs';
   styleUrls: ['./items.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemsComponent implements OnInit {
-  list$: Observable<Listy[]>;
-  list: Listy;
+export class ItemsComponent implements OnInit, OnDestroy {
+  list: List;
+  items: Item[];
+  completeItems: Item[];
   form: FormGroup;
+  faTrash = faTrash;
+  private unsubscribe$ = new Subject();
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private appService: AppService,
-              private listQuery: ListQuery,
-              private changeDetector: ChangeDetectorRef) {
+              private appService: AppService) {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params.id;
-    this.list$ = this.listQuery.selectAll({filterBy: (entity) => entity.id === id});
-
-    this.list$.subscribe((list) => {
-      this.list = list[0];
+    this.form = new FormGroup({
+      name: new FormControl('', Validators.required)
     });
-
-    this.route.data.subscribe((data) => {
-      if (data.list === undefined) {
-        this.router.navigate(['/']);
-      }
-      this.form = new FormGroup({
-        name: new FormControl('', Validators.required),
-      });
-
+    this.appService.stateChanged.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.list = this.appService.getListById(this.route.snapshot.params.id);
+      this.items = this.list.items.filter((item) => !item.isComplete);
+      this.completeItems = this.list.items.filter((item) => item.isComplete);
     });
   }
 
   submit(): void {
-    const date = new Date();
-    const newItem: Item = {
-      name: this.form.value.name,
-      createdDate: date,
-      isComplete: false
-    };
-    this.appService.addItemToList([newItem], this.listQuery.getAll({filterBy: (entity) => entity.id === this.route.snapshot.params.id})[0]);
+    const item = new Item(this.form.value.name);
+    this.appService.addItemToList(item, this.list);
     this.form.reset();
   }
 
   removeItem(item: Item): void {
-    this.appService.removeItemFromList(item, this.list);
+    this.appService.changeItemState(item, this.list, !item.isComplete);
+  }
+
+  deleteItem(item: Item): void {
+    this.appService.deleteItem(item, this.list);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

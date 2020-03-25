@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ListsAddComponent } from './add/lists-add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 const routes: Route[] = [
   {path: '', component: ListsComponent}
@@ -20,7 +21,8 @@ const routes: Route[] = [
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SweetAlert2Module
   ]
 })
 export class ListsModule {

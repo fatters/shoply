@@ -14,10 +14,25 @@
 }
 
 .item {
-  border-bottom: 1px solid #008080;
+   border-bottom: 1px solid #008080;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button {
+    background: none!important;
+    border: 0!important;
+    color: #008080!important;
+    padding: 0 12px!important;
+  }
 
   a {
     display: block;
     padding: 12px;
+    flex-grow: 1;
   }
 }

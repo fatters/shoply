@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { listsAddAnimations } from './lists-add.animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../../app.service';
+import { List } from '../_model/list';
 
 @Component({
   selector: 'lists-add',
@@ -26,7 +27,11 @@ export class ListsAddComponent implements OnInit {
 
   submit(): void {
     if (this.form.valid) {
-      this.appService.addListNew(this.form.value.name).then(() => this.addSuccessful(), () => this.addFailed());
+      this.appService.addList(new List(
+        this.form.value.name,
+        new Date(),
+        []
+      )).then(() => this.addSuccessful(), () => this.addFailed());
       this.form.reset();
     }
   }
