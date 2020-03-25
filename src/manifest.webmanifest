@@ -1,7 +1,7 @@
 {
   "name": "Shoply",
   "short_name": "Shoply",
-  "theme_color": "008080",
+  "theme_color": "#008080",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
