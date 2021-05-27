@@ -19,7 +19,7 @@ const routes: Route[] = [
   imports: [
     BrowserAnimationsModule,
     HeaderModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     SweetAlert2Module.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
