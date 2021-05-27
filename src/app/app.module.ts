@@ -8,8 +8,8 @@ import { HeaderModule } from './common/header/header.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 const routes: Route[] = [
-  {path: '', loadChildren: './lists/lists.module#ListsModule'},
-  {path: 'items/:id', loadChildren: './items/items.module#ItemsModule'}
+  {path: '', loadChildren: () => import('./lists/lists.module').then(m => m.ListsModule)},
+  {path: 'items/:id', loadChildren: () => import('./items/items.module').then(m => m.ItemsModule)}
 ];
 
 @NgModule({
