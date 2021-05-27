@@ -6,7 +6,6 @@ import { faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'lists',
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
