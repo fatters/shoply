@@ -5,7 +5,7 @@
       this list will not appear.
     </p>
     <form novalidate (ngSubmit)="submit()" [formGroup]="form">
-      <input type="text" id="name" formControlName="name" placeholder="list name e.g. tesco friday" />
+      <input type="text" id="name" formControlName="name" placeholder="list name e.g. tesco friday" autocomplete="off" />
       <button type="submit" [disabled]="form.invalid">Create New List</button>
       <button (click)="close()">Cancel</button>
     </form>

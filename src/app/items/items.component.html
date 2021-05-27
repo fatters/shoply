@@ -1,7 +1,7 @@
 <div class="page-top item-add">
   <p class="alert">Click an item to remove it</p>
   <form novalidate (ngSubmit)="submit()" [formGroup]="form">
-    <input type="text" id="name" formControlName="name" placeholder="item name e.g. milk" />
+    <input type="text" id="name" formControlName="name" placeholder="item name e.g. milk" autocomplete="off" />
     <button type="submit" [disabled]="form.invalid">Add</button>
   </form>
 </div>
